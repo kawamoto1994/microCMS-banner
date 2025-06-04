@@ -1,0 +1,10 @@
+
+.swiper-wrapper {
+    height: auto;
+}
+
+.swiper-slide > a > img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
