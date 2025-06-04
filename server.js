@@ -1,11 +1,21 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const url = require('url'); // ← 追加
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+  const parsedUrl = url.parse(req.url); // ← ここでパース
+  let pathname = parsedUrl.pathname;    // ← クエリを除いたパスだけ取得
 
-  // 拡張子からContent-Typeを決める
+  // パスを解釈（/ の場合は index.html に）
+  let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
+
+  // フォルダっぽかったら index.html を補う
+  if (path.extname(filePath) === '') {
+    filePath = path.join(filePath, 'index.html');
+  }
+
+  // 拡張子から Content-Type を決定
   const extname = path.extname(filePath);
   let contentType = 'text/html';
 
@@ -27,6 +37,7 @@ const server = http.createServer((req, res) => {
       break;
   }
 
+  // ファイルを読み込んで返す
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
