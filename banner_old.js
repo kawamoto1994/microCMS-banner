@@ -8,29 +8,31 @@ const bannerClient = createClient({
 
 // プレビュー画面用 コンテンツID、draftKey取得
 const params = new URLSearchParams(window.location.search);
+const contentId = params.get("id");
 const draftKey = params.get("draftKey");
 
 (async () => {
   // あとでHTMLを挿入する配列
   const createHtml = [];
-  let bannerData;
 
-   // bannerのデータを取得
-  if(draftKey) {
-    // 画面プレビューしている下書きのバナー+公開中のバナー全件のデータを取得
-    bannerData = await bannerClient.get({
+  // bannerのAPIを取得
+  const public = await bannerClient.get({ endpoint: 'banner' });
+
+   // プレビュー用のバナーを取得
+  if(contentId && draftKey) {
+    const private = await bannerClient.get({
       endpoint: 'banner',
+      contentId: contentId,
       queries: { draftKey },
     });
-  } else {
-    // 公開中のバナー全件のデータを取得（公開終了・下書きのバナーは含めない）
-    bannerData = await bannerClient.get({
-      endpoint: 'banner',
-    });
+
+    // 配列に画面プレビューの対象のbannerを追加
+    const privateHtml = `<div class="swiper-slide"><a href="${private.url}"><img src="${private.image.url}" alt="${private.alt}"></a></div>`;
+    createHtml.push(privateHtml);
   }
 
   // 配列にbannerを追加
-  bannerData.contents.forEach((item) => {
+  public.contents.forEach((item) => {
     const html = `<div class="swiper-slide"><a href="${item.url}"><img src="${item.image.url}" alt="${item.alt}"></a></div>`;
     createHtml.push(html);
   });
