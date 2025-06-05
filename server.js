@@ -49,7 +49,7 @@ const server = http.createServer((req, res) => {
   });
 });
 
-const port = 3000;
+const port = 10000;
 server.listen(port, () => {
   console.log(`サーバーが http://localhost:${port} で起動しました`);
 });
