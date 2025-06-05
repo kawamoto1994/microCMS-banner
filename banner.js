@@ -26,6 +26,7 @@ const draftKey = params.get("draftKey");
       queries: { draftKey },
     });
 
+    // 配列に画面プレビューの対象のbannerを追加
     const privateHtml = `<div class="swiper-slide"><a href="${private.url}"><img src="${private.image.url}" alt="${private.alt}"></a></div>`;
     createHtml.push(privateHtml);
   }
@@ -35,7 +36,6 @@ const draftKey = params.get("draftKey");
     const html = `<div class="swiper-slide"><a href="${item.url}"><img src="${item.image.url}" alt="${item.alt}"></a></div>`;
     createHtml.push(html);
   });
-
 
   // HTML挿入
   const wrapper = document.querySelector('#slider');
