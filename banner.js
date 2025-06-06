@@ -1,12 +1,18 @@
 const { createClient } = microcms;
 
+// ホスト名取得
+const hostName = location.hostname;
+
+// 本番環境のホスト名
+const production = 'honban';
+
 // APIキー渡す
 const bannerClient = createClient({
   serviceDomain: 'test-restaurant',
   apiKey: 'BgN8GTQoC3uCwhOYDpAxnBjv7CFW8HbGxrxv',
 });
 
-// プレビュー画面用 コンテンツID、draftKey取得
+// プレビュー画面用 draftKey取得
 const params = new URLSearchParams(window.location.search);
 const draftKey = params.get("draftKey");
 
@@ -16,7 +22,7 @@ const draftKey = params.get("draftKey");
   let bannerData;
 
    // bannerのデータを取得
-  if(draftKey) {
+  if(draftKey && hostName !== production) {
     // 画面プレビューしている下書きのバナー+公開中のバナー全件のデータを取得
     bannerData = await bannerClient.get({
       endpoint: 'banner',
