@@ -1,0 +1,12 @@
+{
+    "name": "kawamotonatsuki/micro-cms-banner",
+    "authors": [
+        {
+            "name": "Natsuki Kawamoto",
+            "email": "kawamotomailbox8940@gmail.com"
+        }
+    ],
+    "require": {
+        "microcmsio/microcms-php-sdk": "^1.0"
+    }
+}
